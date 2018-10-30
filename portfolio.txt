@@ -1,0 +1,11 @@
+ { "ZSP":
+	{
+		"symbol": "ZSP.TO",
+		"allocation": 0.25
+	},
+	"ZEA":
+	{
+		"symbol": "ZEA.TO",
+		"allocation": 0.25
+	}
+}
