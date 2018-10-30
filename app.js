@@ -45,7 +45,6 @@ function getAccounts() {
 		console.log(rrsp);
 		getBalance(margin);
 		getBalance(rrsp);
-		getPositions(rrsp);
 	}).catch(function(error) {
 		console.log(error);
 
@@ -56,17 +55,29 @@ function getBalance(account) {
 	axios.get(`${server}v1/accounts/${account}/balances`, {
 		headers: {Authorization: "Bearer " + access}
 	}).then(function(res){
-		console.log(res.data.perCurrencyBalances[0].totalEquity);
+		equity = res.data.perCurrencyBalances[0].totalEquity;
+		getPositions(account, equity);
 	}).catch(function(error) {
 		console.log(error);
 	}) 
 }
 
-function getPositions(account) {
+function getPositions(account, equity) {
 	axios.get(`${server}v1/accounts/${account}/positions`, {
 		headers: {Authorization: "Bearer " + access}
 	}).then(function(res){
-		console.log(res.data);
+		var positions = res.data.positions;
+		console.log(positions)
+		positions = positions.map(position => {
+			var allocation = position.currentMarketValue/equity;
+			var obj = {
+				symbol: position.symbol,
+				currentMarketValue: position.currentMarketValue,
+				allocation: allocation
+			}
+			return obj;
+		})
+		console.log(positions)
 	}).catch(function(error) {
 		console.log(error);
 	}) 

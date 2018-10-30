@@ -6,6 +6,6 @@
 	"ZEA":
 	{
 		"symbol": "ZEA.TO",
-		"allocation": 0.25
+		"allocation": 0.20
 	}
 }
