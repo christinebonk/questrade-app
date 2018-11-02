@@ -46,6 +46,7 @@ function getAccounts() {
 		console.log(rrsp);
 		getBalance(margin);
 		getBalance(rrsp);
+		order(margin,"ZPR.TO", 1)
 	}).catch(function(error) {
 		if (error.response.data.code == "1017") {
 			refreshToken();
@@ -106,7 +107,20 @@ function determinePurchase(amount, equity) {
 		}
 		return obj;
 	});
-	console.log(purchase)
+}
+
+function order(account, symbol, quantity) {
+	axios.post(`${server}v1/accounts/${account}/orders`, {
+		headers: {Authorization: "Bearer " + access},
+		symbolId: symbol,
+		quantity: quantity,
+		orderType: "Market",
+		action: "Buy"
+	}).then(function(res){
+		console.log(res);
+	}).catch(function(error) {
+		console.log(error);
+	});;
 }
 
 getPortfolio();
