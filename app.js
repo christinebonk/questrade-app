@@ -6,6 +6,7 @@ var access = keys.questrade.access_token;
 var server = keys.questrade.server;
 var fs = require("fs");
 var portfolio;
+var positions;
 
 function refreshToken() {
 	axios.get(`https://login.questrade.com/oauth2/token?grant_type=refresh_token&refresh_token=${refresh}`)
@@ -61,7 +62,6 @@ function getBalance(account) {
 	}).then(function(res){
 		equity = res.data.perCurrencyBalances[0].totalEquity;
 		getPositions(account, equity);
-		determineSpend(1000, equity);
 	}).catch(function(error) {
 		console.log(error);
 	}) 
@@ -71,7 +71,7 @@ function getPositions(account, equity) {
 	axios.get(`${server}v1/accounts/${account}/positions`, {
 		headers: {Authorization: "Bearer " + access}
 	}).then(function(res){
-		var positions = res.data.positions;
+		positions = res.data.positions;
 		positions = positions.map(position => {
 			var currentAllocation = position.currentMarketValue/equity;
 			var allocation = portfolio.filter(obj => {
@@ -81,22 +81,32 @@ function getPositions(account, equity) {
 				symbol: position.symbol,
 				currentMarketValue: position.currentMarketValue,
 				currentAllocation: (currentAllocation).toFixed(2),
-				allocation: allocation[0].allocation
+				allocation: allocation[0].allocation,
+				currentPrice: position.currentPrice
 			}
 			return obj;
 		});
-		console.log(positions);
+		determinePurchase(1000, equity);
 	}).catch(function(error) {
 		console.log(error);
 	}) 
 }
 
-function determineSpend(amount, equity) {
+function determinePurchase(amount, equity) {
 	var total = amount + equity;
-	portfolio.map(item => {
-		item["spend"] = total * item.allocation;
+	positions.map(item => {
+		item["spend"] = ((total * item.allocation) - item.currentMarketValue).toFixed(2);
+		item["quantity"] = Math.round(item.spend/item.currentPrice);
 	})
-	console.log(portfolio);
+	var purchase = positions.map(item => {
+		var obj = {
+			symbol: item.symbol,
+			spend: item.spend,
+			quantity: item.quantity
+		}
+		return obj;
+	});
+	console.log(purchase)
 }
 
 getPortfolio();
