@@ -46,7 +46,13 @@ function getAccounts() {
 		getBalance(margin);
 		getBalance(rrsp);
 	}).catch(function(error) {
-		console.log(error);
+
+		if (error.response.data.code == "1017") {
+			refreshToken();
+		} else {
+			console.log(error);
+		}
+		;
 
 	})
 }
