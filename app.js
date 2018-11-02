@@ -24,7 +24,6 @@ function refreshToken() {
 	})
 };
 
-getAccounts();
 
 function getPortfolio() {
 	fs.readFile("portfolio.txt", "utf8", function(error,data) {
@@ -32,6 +31,7 @@ function getPortfolio() {
 			return console.log(error);
 		};
 		portfolio = JSON.parse(data);
+		
 	});
 }
 
@@ -46,14 +46,12 @@ function getAccounts() {
 		getBalance(margin);
 		getBalance(rrsp);
 	}).catch(function(error) {
-
 		if (error.response.data.code == "1017") {
 			refreshToken();
 		} else {
 			console.log(error);
 		}
 		;
-
 	})
 }
 
@@ -63,6 +61,7 @@ function getBalance(account) {
 	}).then(function(res){
 		equity = res.data.perCurrencyBalances[0].totalEquity;
 		getPositions(account, equity);
+		determineSpend(1000, equity);
 	}).catch(function(error) {
 		console.log(error);
 	}) 
@@ -73,21 +72,39 @@ function getPositions(account, equity) {
 		headers: {Authorization: "Bearer " + access}
 	}).then(function(res){
 		var positions = res.data.positions;
-		console.log(positions)
 		positions = positions.map(position => {
-			var allocation = position.currentMarketValue/equity;
+			var currentAllocation = position.currentMarketValue/equity;
+			var allocation = portfolio.filter(obj => {
+				return obj.symbol === position.symbol
+			});
 			var obj = {
 				symbol: position.symbol,
 				currentMarketValue: position.currentMarketValue,
-				allocation: allocation
+				currentAllocation: (currentAllocation).toFixed(2),
+				allocation: allocation[0].allocation
 			}
 			return obj;
-		})
-		console.log(positions)
+		});
+		console.log(positions);
 	}).catch(function(error) {
 		console.log(error);
 	}) 
 }
 
+function determineSpend(amount, equity) {
+	var total = amount + equity;
+	portfolio.map(item => {
+		item["spend"] = total * item.allocation;
+	})
+	console.log(portfolio);
+}
+
+getPortfolio();
+getAccounts();
+
+
+
+
+// getAccounts();
 
 

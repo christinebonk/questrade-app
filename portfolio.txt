@@ -1,11 +1,42 @@
- { "ZSP":
+[ 
 	{
 		"symbol": "ZSP.TO",
 		"allocation": 0.25
 	},
-	"ZEA":
 	{
 		"symbol": "ZEA.TO",
 		"allocation": 0.20
+	},
+	{
+		"symbol": "ZEM.TO",
+		"allocation": 0.20
+	},
+	{
+		"symbol": "ZPR.TO",
+		"allocation": 0.05
+	},
+	{
+		"symbol": "ZWH.TO",
+		"allocation": 0.05
+	},
+	{
+		"symbol": "ZWB.TO",
+		"allocation": 0.05
+	},
+	{
+		"symbol": "HXT.TO",
+		"allocation": 0.05
+	},
+	{
+		"symbol": "ZRE.TO",
+		"allocation": 0.05
+	},
+	{
+		"symbol": "VSB.TO",
+		"allocation": 0.05
+	},
+	{
+		"symbol": "ZHY.TO",
+		"allocation": 0.05
 	}
-}
+]
