@@ -8,6 +8,7 @@ var fs = require("fs");
 var portfolio;
 var positions;
 
+//refresh token when expired
 function refreshToken() {
 	axios.get(`https://login.questrade.com/oauth2/token?grant_type=refresh_token&refresh_token=${refresh}`)
 	.then(function(res) {
@@ -25,17 +26,17 @@ function refreshToken() {
 	})
 };
 
-
+//pull user portfolio
 function getPortfolio() {
 	fs.readFile("portfolio.txt", "utf8", function(error,data) {
 		if(error) {
 			return console.log(error);
 		};
-		portfolio = JSON.parse(data);
-		
+		portfolio = JSON.parse(data);	
 	});
 }
 
+//get account information
 function getAccounts() {
 	axios.get(`${server}v1/accounts`, {
 		headers: {Authorization: "Bearer " + access}
@@ -46,7 +47,7 @@ function getAccounts() {
 		console.log(rrsp);
 		getBalance(margin);
 		getBalance(rrsp);
-		order(margin,"ZPR.TO", 1)
+		// order(margin,"ZPR.TO", 1)
 	}).catch(function(error) {
 		if (error.response.data.code == "1017") {
 			refreshToken();
@@ -57,6 +58,7 @@ function getAccounts() {
 	})
 }
 
+//get account balance
 function getBalance(account) {
 	axios.get(`${server}v1/accounts/${account}/balances`, {
 		headers: {Authorization: "Bearer " + access}
@@ -68,6 +70,7 @@ function getBalance(account) {
 	}) 
 }
 
+//get positions 
 function getPositions(account, equity) {
 	axios.get(`${server}v1/accounts/${account}/positions`, {
 		headers: {Authorization: "Bearer " + access}
@@ -93,6 +96,8 @@ function getPositions(account, equity) {
 	}) 
 }
 
+
+//determine purchase based on user amount
 function determinePurchase(amount, equity) {
 	var total = amount + equity;
 	positions.map(item => {
@@ -109,13 +114,22 @@ function determinePurchase(amount, equity) {
 	});
 }
 
+//WIP
 function order(account, symbol, quantity) {
+	console.log(access);
 	axios.post(`${server}v1/accounts/${account}/orders`, {
 		headers: {Authorization: "Bearer " + access},
-		symbolId: symbol,
-		quantity: quantity,
-		orderType: "Market",
-		action: "Buy"
+		payload: {
+			accountNumber: account,
+			symbolId: symbol,
+			quantity: quantity,
+			isAllOrNone: true,
+			isAnonymous: false,
+			orderType: "Market",
+			action: "Buy",
+			primaryRoute: "AUTO",
+			secondaryRoute: "AUTO"
+		}
 	}).then(function(res){
 		console.log(res);
 	}).catch(function(error) {
@@ -123,12 +137,12 @@ function order(account, symbol, quantity) {
 	});;
 }
 
+//call funtions
 getPortfolio();
 getAccounts();
 
 
 
 
-// getAccounts();
 
 
