@@ -21,6 +21,7 @@ function refreshToken() {
 			};
 			access = res.access_token;
 		});
+		getAccounts();
 	}).catch(function(error) {
 		console.log(error);
 	})
@@ -141,7 +142,15 @@ function order(account, symbol, quantity) {
 getPortfolio();
 getAccounts();
 
-
+module.exports = {
+    refreshToken: refreshToken,
+    getPortfolio: getPortfolio,
+    getAccounts: getAccounts,
+    getBalance: getBalance,
+    getPortfolio: getPortfolio,
+    getPositions: getPositions,
+    determinePurchase: determinePurchase
+}
 
 
 
