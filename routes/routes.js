@@ -32,12 +32,13 @@ function routes(app) {
 		});
 	});
 
-	app.get("/api/balance", function(req,res) {
+	app.get("/api/balance/:account", function(req,res) {
+		var account = req.params.account;
 		axios.get(`${server}v1/accounts/${account}/balances`, {
 			headers: {Authorization: "Bearer " + access}
-		}).then(function(res){
-			equity = res.data.perCurrencyBalances[0].totalEquity;
-			// getPositions(account, equity);
+		}).then(function(results){
+			equity = results.data.perCurrencyBalances[0].totalEquity;
+			res.json(equity);
 		}).catch(function(error) {
 			console.log(error);
 		}); 
