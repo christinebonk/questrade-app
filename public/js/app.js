@@ -1,6 +1,7 @@
 //display accounts on load
 getAccounts();
 
+//get accounts
 function getAccounts() {
 	$.ajax("/api/accounts", {
 		type: "GET"
@@ -13,13 +14,12 @@ function getAccounts() {
 			var selectionInput = $(`<input id=${accounts[key]} value=${accounts[key]} name='accounts' type='radio'>`);
 			var selectionLabel = $(`<label for=${accounts[key]}>${key}</label>`);
 			selectionDiv.append(selectionInput, selectionLabel);
-			$("#single-select").append(selectionDiv);
-			
+			$("#single-select").append(selectionDiv);	
 		}
-
 	});
 }
 
+//get account balance
 function getBalance(account) {
 	$.ajax(`/api/balance/${account}`, {
 		type:"GET"
@@ -28,10 +28,42 @@ function getBalance(account) {
 	})
 }
 
+//get account positions
+function getPositions(account, equity, amount) {
+	$.ajax(`/api/positions/${account}`, {
+		type:"GET"
+	}).then(function(res) {
+		var positions = res;
+		determinePurchase(amount, equity, positions)
+	});
+}
+
+//detemine purchase
+function determinePurchase(amount, equity, positions) {
+	amount = parseInt(amount);
+	var total = amount;
+	positions.map(item => {
+		total = total + item.currentMarketValue;
+	});
+	positions.map(item => {
+		item["spend"] = ((total * item.allocation) - item.currentMarketValue).toFixed(2);
+		item["quantity"] = Math.round(item.spend/item.currentPrice);
+	});
+	var purchase = positions.map(item => {
+		var obj = {
+			symbol: item.symbol,
+			spend: item.spend,
+			quantity: item.quantity
+		}
+		return obj;
+	});
+	console.log(purchase);
+}
 
 //submit button functionality
 $("#submit").on("click", function(event) {
 	event.preventDefault();
+	var equity =$("input[name='accounts']:checked").attr("data-equity");
 	var amount = $("#enter-amount").val().trim();
 	var account = $("input[name='accounts']:checked").val();
 	if (!amount) {
@@ -40,5 +72,5 @@ $("#submit").on("click", function(event) {
 	if (!account) {
 		$("#account-error").append("Please select an account");
 	}
-
+	getPositions(account, equity, amount);
 });

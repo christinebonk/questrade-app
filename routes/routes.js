@@ -44,6 +44,33 @@ function routes(app) {
 		}); 
 	});
 
+	app.get("/api/positions/:account", function(req,res) {
+		var account = req.params.account;
+		getPortfolio();
+		axios.get(`${server}v1/accounts/${account}/positions`, {
+			headers: {Authorization: "Bearer " + access}
+		}).then(function(results){
+			positions = results.data.positions;
+			console.log(portfolio)
+			positions = positions.map(position => {
+				var currentAllocation = position.currentMarketValue/equity;
+				var allocation = portfolio.filter(obj => {
+					return obj.symbol === position.symbol
+				});
+				var obj = {
+					symbol: position.symbol,
+					currentMarketValue: position.currentMarketValue,
+					currentAllocation: (currentAllocation).toFixed(2),
+					allocation: allocation[0].allocation,
+					currentPrice: position.currentPrice
+				}
+				return obj;
+			});
+			res.json(positions);
+		}).catch(function(error) {
+			console.log(error);
+		}); 
+	});
 }
 
 module.exports = routes;
