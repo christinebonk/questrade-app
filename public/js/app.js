@@ -40,6 +40,7 @@ function getPositions(account, equity, amount) {
 
 //detemine purchase
 function determinePurchase(amount, equity, positions) {
+	$("#results").empty();
 	amount = parseInt(amount);
 	var total = amount;
 	positions.map(item => {
@@ -57,7 +58,13 @@ function determinePurchase(amount, equity, positions) {
 		}
 		return obj;
 	});
-	console.log(purchase);
+	purchase.forEach(item => {
+		var newDiv = $(`<div class="etf"></div>`);
+		var newTitle = $(`<h3>${item.symbol}</h3>`);
+		var newFig = $(`<figcaption>${item.quantity}</figcaption>`);
+		newDiv.append(newTitle, newFig);
+		$("#results").append(newDiv);
+	})
 }
 
 //submit button functionality
