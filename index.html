@@ -5,19 +5,27 @@
 	<title>Questrade App</title>
 	<!--Jquery-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!--Font-->
+	<link href="https://fonts.googleapis.com/css?family=Poppins:400,700" rel="stylesheet">
+	<!--CSS-->
+	<link rel="stylesheet" href="/styles/style.css">
+
 </head>
 <body>
 	<!--Header-->
 	<header>
-		<h1>Questrade App</h1>
+		<div class="wrapper"> 		
+			<h1>Questrade App</h1>
+		</div>
+
 	</header>
 	<!--Main-->
-	<main>
+	<main class="wrapper">
 		<form>
 			<!--Accounts-->
 			<section id="accounts">
 				<h2>Select an Account</h2>
-				<div id="single-select">
+				<div class="single-select">
 				</div>
 				<p class="error-message" id="account-error"></p>
 			</section>

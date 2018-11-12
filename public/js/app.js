@@ -14,7 +14,7 @@ function getAccounts() {
 			var selectionInput = $(`<input id=${accounts[key]} value=${accounts[key]} name='accounts' type='radio'>`);
 			var selectionLabel = $(`<label for=${accounts[key]}>${key}</label>`);
 			selectionDiv.append(selectionInput, selectionLabel);
-			$("#single-select").append(selectionDiv);	
+			$(".single-select").append(selectionDiv);	
 		}
 	});
 }
@@ -41,7 +41,7 @@ function getPositions(account, equity, amount) {
 //detemine purchase
 function determinePurchase(amount, equity, positions) {
 	$("#results").empty();
-	amount = parseInt(amount);
+	amount = parseInt(amount); //user entered amount
 	var total = amount;
 	positions.map(item => {
 		total = total + item.currentMarketValue;

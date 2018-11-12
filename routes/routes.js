@@ -20,6 +20,7 @@ function routes(app) {
 		axios.get(`${server}v1/accounts`, {
 			headers: {Authorization: "Bearer " + access}
 		}).then(function(results) {
+			//todo: dynamic populate accounts (data.type)
 			var margin = results.data.accounts[0].number;
 			var rrsp = results.data.accounts[1].number;
 			res.json({Margin:margin, RRSP:rrsp});
@@ -76,6 +77,7 @@ function routes(app) {
 module.exports = routes;
 
 //refresh token
+//todo: refreshtoken automatically
 function refreshToken() {
 	axios.get(`https://login.questrade.com/oauth2/token?grant_type=refresh_token&refresh_token=${refresh}`)
 	.then(function(res) {
