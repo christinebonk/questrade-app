@@ -41,6 +41,7 @@ function getPositions(account, equity, amount) {
 //detemine purchase
 function determinePurchase(amount, equity, positions) {
 	$("#results").empty();
+	console.log(positions);
 	amount = parseInt(amount); //user entered amount
 	var total = amount;
 	positions.map(item => {
@@ -54,15 +55,17 @@ function determinePurchase(amount, equity, positions) {
 		var obj = {
 			symbol: item.symbol,
 			spend: item.spend,
-			quantity: item.quantity
+			quantity: item.quantity,
+			currentPrice: item.currentPrice
 		}
 		return obj;
 	});
 	purchase.forEach(item => {
 		var newDiv = $(`<div class="etf"></div>`);
 		var newTitle = $(`<h3>${item.symbol}</h3>`);
-		var newFig = $(`<figcaption>${item.quantity}</figcaption>`);
-		newDiv.append(newTitle, newFig);
+		var newFig = $(`<figcaption>Quantity: <span class="highlight">${item.quantity}</span></figcaption>`);
+		var newFig2 = $(`<figcaption>Price: <span class="highlight">$${item.currentPrice}</span></figcaption>`);
+		newDiv.append(newTitle, newFig, newFig2);
 		$("#results").append(newDiv);
 	})
 }
@@ -70,14 +73,30 @@ function determinePurchase(amount, equity, positions) {
 //submit button functionality
 $("#submit").on("click", function(event) {
 	event.preventDefault();
+
+	//empty fields
+	$("#amount-error").empty();
+	$("#account-error").empty();
+
+	//get user input
 	var equity =$("input[name='accounts']:checked").attr("data-equity");
 	var amount = $("#enter-amount").val().trim();
 	var account = $("input[name='accounts']:checked").val();
+	var error = false; 
+
+	//check for errors
 	if (!amount) {
 		$("#amount-error").append("Please enter an amount");
+		error = true;
 	} 
 	if (!account) {
 		$("#account-error").append("Please select an account");
+		error = true;
 	}
-	getPositions(account, equity, amount);
+
+	//execute call
+	if(!error) {
+		getPositions(account, equity, amount);
+	}
+	
 });
