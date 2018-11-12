@@ -12,13 +12,22 @@ html {
 }
 
 header {
-	text-align: center;
+	padding-left: 20px;
 }
 
 h1 {
 	color: #280739;
 	text-transform: uppercase;
-	font-size: 50px;
+	font-size: 38px;
+}
+
+h2 {
+	margin-left: 5px;
+}
+
+h3 {
+	margin: 0px 0px 3px;
+	width: 100%;
 }
 
 .wrapper {
@@ -27,17 +36,32 @@ h1 {
 }
 
 main {
-	 text-align: center;
+	 display: flex;
 }
 
+form {
+	width: 30%;
+	padding: 20px;
+}
+
+#result {
+	width: 70%;
+}
+
+/*form*/
+
+input[type=text] {
+    border: none;
+    border-radius: 4px;
+    margin: 5px;
+    height: 30px;
+}
 
 /*select account buttons*/
 
 .single-select {
   display: flex;
-  justify-content: center;
 }
-
 
 .single-select .selection label {
   display: inline-block;
@@ -72,7 +96,7 @@ main {
 	border-radius: 6px;
 	padding: 15px;
 	cursor: pointer;
-	margin: 5px;
+	margin-left: 5px;
 	text-align: center;
 	color: white;
 }
@@ -87,7 +111,7 @@ main {
 .error-message {
 	height: 20px;
 	color: #B92424;
-
+	margin: 2px 5px 5px;
 	font-size: 12px;
 }
 
@@ -100,11 +124,67 @@ main {
 }
 
 .highlight {
-	font-size: 20px;
 	font-weight: bold;
 }
 
 #results div {
-	width: 20%;
+	width: calc(20% - 20px);
 	color: #280739;
+	text-align: center;
+	border-radius: 5px;
+	border: 3px solid #EFB614;
+	padding: 10px;
+	margin: 10px;
+	background: white;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+
+}
+
+#results figcaption {
+	font-size: 15px;
+	width: 100%;
+}
+
+
+
+/*media queries*/
+
+@media only screen and (max-width: 1200px) {
+	#results div {
+		width: calc(33.33% - 20px);
+	}
+}
+
+@media only screen and (max-width: 850px) {
+	#results div {
+		width: calc(50% - 20px);
+	}
+
+	form {
+		width: 50%;
+	}
+
+	div.#result {
+		width: 50%;
+	}
+}
+
+@media only screen and (max-width: 680px) {
+
+	main {
+		flex-wrap: wrap;
+	}
+
+	form {
+		width: 100%;
+	}
+
+	div.#result {
+		width: 100%;
+		margin-top: 20px;
+	}
 }

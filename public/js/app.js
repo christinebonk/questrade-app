@@ -86,11 +86,11 @@ $("#submit").on("click", function(event) {
 
 	//check for errors
 	if (!amount) {
-		$("#amount-error").append("Please enter an amount");
+		$("#amount-error").append("! Please enter an amount");
 		error = true;
 	} 
 	if (!account) {
-		$("#account-error").append("Please select an account");
+		$("#account-error").append("! Please select an account");
 		error = true;
 	}
 
