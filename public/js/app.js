@@ -40,26 +40,44 @@ function getPositions(account, equity, amount) {
 
 //detemine purchase
 function determinePurchase(amount, equity, positions) {
-	$("#results").empty();
-	console.log(positions);
+	$("#results").empty(); 
+	$("#results-container").empty(); //empty results area
 	amount = parseInt(amount); //user entered amount
+
 	var total = amount;
+	var totalRemaining = 0;
+
+	//determine total equity
 	positions.map(item => {
 		total = total + item.currentMarketValue;
 	});
+
+	//determine spend allocation and quantity
 	positions.map(item => {
 		item["spend"] = ((total * item.allocation) - item.currentMarketValue).toFixed(2);
-		item["quantity"] = Math.round(item.spend/item.currentPrice);
+		item["quantity"] = Math.floor(item.spend/item.currentPrice);
 	});
+
+	//create purchase recommendation object
 	var purchase = positions.map(item => {
+		var remaining = Math.round(item.spend - item.quantity * item.currentPrice);
+		totalRemaining += remaining;
 		var obj = {
 			symbol: item.symbol,
 			spend: item.spend,
 			quantity: item.quantity,
-			currentPrice: item.currentPrice
+			currentPrice: item.currentPrice,
+			remaining: remaining
 		}
 		return obj;
 	});
+
+	console.log(purchase);
+	console.log(totalRemaining)
+
+	var resultTitle = $(`<h2>Your Results</h2>`);
+	var resultRemaining = $(`<p>Remaining spend: $${totalRemaining}</p>`);
+	$("#result-container").prepend(resultTitle, resultRemaining);
 	purchase.forEach(item => {
 		var newDiv = $(`<div class="etf"></div>`);
 		var newTitle = $(`<h3>${item.symbol}</h3>`);

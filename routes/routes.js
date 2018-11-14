@@ -22,13 +22,11 @@ function routes(app) {
 		}).then(function(results) {
 			var accounts = results.data.accounts;
 			var accountObj = {}
-			console.log(accounts)
 			accounts.forEach(function(item) {
 				var type = item.type;
 				var number = item.number;
 				accountObj[type] = number;
 			})
-			console.log(accountObj);
 			res.json(accountObj);
 		}).catch(function(error) {
 			if (error.response.data.code == "1017") {
@@ -58,7 +56,6 @@ function routes(app) {
 			headers: {Authorization: "Bearer " + access}
 		}).then(function(results){
 			positions = results.data.positions;
-			console.log(portfolio)
 			positions = positions.map(position => {
 				var currentAllocation = position.currentMarketValue/equity;
 				var allocation = portfolio.filter(obj => {

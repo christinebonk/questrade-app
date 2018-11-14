@@ -30,6 +30,10 @@ h3 {
 	width: 100%;
 }
 
+p {
+	margin-left: 5px;
+}
+
 .wrapper {
 	width: 80%;
 	margin: 0 auto;
@@ -41,11 +45,12 @@ main {
 
 form {
 	width: 30%;
-	padding: 20px;
+	padding: 0px 20px 20px 20px;
 }
 
-#result {
+#result-container {
 	width: 70%;
+	padding: 0px 30px;
 }
 
 /*form*/
@@ -168,7 +173,7 @@ input[type=text] {
 		width: 50%;
 	}
 
-	div.#result {
+	#result-container {
 		width: 50%;
 	}
 }
@@ -183,7 +188,7 @@ input[type=text] {
 		width: 100%;
 	}
 
-	div.#result {
+	#result-container {
 		width: 100%;
 		margin-top: 20px;
 	}
