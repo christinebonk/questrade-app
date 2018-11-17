@@ -23,12 +23,11 @@ app.listen(port, function() {
   
 });
 
-routes(app);
-
 function checkToken() {
   axios.get(`${server}v1/accounts`, {
     headers: {Authorization: "Bearer " + access}
   }).then(function(results) {
+    routes(app);
   }).catch(function(error) {
     if (error.response.data.code == "1017") {
       refreshToken();
@@ -49,8 +48,10 @@ function refreshToken() {
         return console.log(error);
       };
       access = res.access_token;
+      routes(app);
     });
   }).catch(function(error) {
     console.log(error);
   });
 };
+

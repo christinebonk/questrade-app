@@ -41,7 +41,7 @@ function getPositions(account, equity, amount) {
 //detemine purchase
 function determinePurchase(amount, equity, positions) {
 	$("#results").empty(); 
-	$("#results-container").empty(); //empty results area
+	$("#result-title").empty(); //empty results area
 	amount = parseInt(amount); //user entered amount
 
 	var total = amount;
@@ -72,12 +72,10 @@ function determinePurchase(amount, equity, positions) {
 		return obj;
 	});
 
-	console.log(purchase);
-	console.log(totalRemaining)
-
+	//attach everything to page
 	var resultTitle = $(`<h2>Your Results</h2>`);
 	var resultRemaining = $(`<p>Remaining spend: $${totalRemaining}</p>`);
-	$("#result-container").prepend(resultTitle, resultRemaining);
+	$("#result-title").prepend(resultTitle, resultRemaining);
 	purchase.forEach(item => {
 		var newDiv = $(`<div class="etf"></div>`);
 		var newTitle = $(`<h3>${item.symbol}</h3>`);

@@ -29,11 +29,7 @@ function routes(app) {
 			})
 			res.json(accountObj);
 		}).catch(function(error) {
-			if (error.response.data.code == "1017") {
-				refreshToken();
-			} else {
-				console.log(error);
-			};
+			console.log(error);
 		});
 	});
 
@@ -79,24 +75,6 @@ function routes(app) {
 
 module.exports = routes;
 
-//refresh token
-//todo: refreshtoken automatically
-function refreshToken() {
-	axios.get(`https://login.questrade.com/oauth2/token?grant_type=refresh_token&refresh_token=${refresh}`)
-	.then(function(res) {
-		console.log(res);
-		fs.writeFile(".env", 
-			`REFRESH_TOKEN=${res.data.refresh_token}\nACCESS_TOKEN=${res.data.access_token}\nSERVER=${res.data.api_server}`
-			, function(error,data) {
-			if(error) {
-				return console.log(error);
-			};
-			access = res.access_token;
-		});
-	}).catch(function(error) {
-		console.log(error);
-	});
-};
 
 //pull portfolio
 function getPortfolio() {
