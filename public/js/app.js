@@ -46,6 +46,7 @@ function determinePurchase(amount, equity, positions) {
 
 	var total = amount;
 	var totalRemaining = 0;
+	var checkAmount = 0;
 
 	//determine total equity
 	positions.map(item => {
@@ -54,14 +55,37 @@ function determinePurchase(amount, equity, positions) {
 
 	//determine spend allocation and quantity
 	positions.map(item => {
-		item["spend"] = ((total * item.allocation) - item.currentMarketValue).toFixed(2);
+		item["spend"] = parseInt(((total * item.allocation) - item.currentMarketValue).toFixed(2));
+		if (item["spend"] < 0) { //if a category is negative set it to zero
+			item["spend"] = 0;
+		}
 		item["quantity"] = Math.floor(item.spend/item.currentPrice);
+		if(item["quantity"] > 0) {
+			checkAmount += item["spend"]
+		}
 	});
+
+	//redistribute if spending more than amount
+	if (checkAmount > amount) {
+		checkAmount = 0;
+		positions.map(item => {
+			if (item.spend > 0) {
+				item.spend = amount * item.allocation
+			}
+			item["quantity"] = Math.floor(item.spend/item.currentPrice);
+			if(item["quantity"] > 0) {
+				checkAmount += item["spend"]
+			}
+		})
+		
+	}
+	console.log(checkAmount)
+
 
 	//create purchase recommendation object
 	var purchase = positions.map(item => {
 		var remaining = Math.round(item.spend - item.quantity * item.currentPrice);
-		totalRemaining += remaining;
+		totalRemaining = amount - checkAmount;
 		var obj = {
 			symbol: item.symbol,
 			spend: item.spend,
@@ -71,6 +95,7 @@ function determinePurchase(amount, equity, positions) {
 		}
 		return obj;
 	});
+		console.log(purchase)
 
 	//attach everything to page
 	var resultTitle = $(`<h2>Your Results</h2>`);
@@ -95,9 +120,9 @@ $("#submit").on("click", function(event) {
 	$("#account-error").empty();
 
 	//get user input
-	var equity =$("input[name='accounts']:checked").attr("data-equity");
-	var amount = $("#enter-amount").val().trim();
-	var account = $("input[name='accounts']:checked").val();
+	var equity =$("input[name='accounts']:checked").attr("data-equity"); //account equity
+	var amount = $("#enter-amount").val().trim(); //user's entered amount
+	var account = $("input[name='accounts']:checked").val(); //chosen account
 	var error = false; 
 
 	//check for errors
