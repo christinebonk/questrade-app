@@ -53,39 +53,52 @@ function determinePurchase(amount, equity, positions) {
 		total = total + item.currentMarketValue;
 	});
 
+	var remainingAllocation = 0; //unused allocation for negative values
+	var allocationCount = 0; //number of remaining items to share allocation
+	var reallocation; //allocation amount between items
+
 	//determine spend allocation and quantity
 	positions.map(item => {
 		item["spend"] = parseInt(((total * item.allocation) - item.currentMarketValue).toFixed(2));
 		if (item["spend"] < 0) { //if a category is negative set it to zero
 			item["spend"] = 0;
+			remainingAllocation += item.allocation; //this amount should be reallocated to other funds
+		} else {
+			allocationCount += 1; //count which funds need allocation
 		}
 		item["quantity"] = Math.floor(item.spend/item.currentPrice);
 		if(item["quantity"] > 0) {
-			checkAmount += item["spend"]
+			checkAmount += item.quantity * item.currentPrice //keep track of spend
 		}
 	});
 
-	//redistribute if spending more than amount
+	//calculate reallocation amount if required
+	reallocation = remainingAllocation/allocationCount;
+
+	//check if amount distributed is higher than entered spending amount
 	if (checkAmount > amount) {
-		checkAmount = 0;
+		checkAmount = 0; //reset check amount
 		positions.map(item => {
 			if (item.spend > 0) {
-				item.spend = amount * item.allocation
-			}
+				item.spend = amount * (item.allocation + reallocation); //add the remaining allocation to funds
+			} 
+			//set quantity
 			item["quantity"] = Math.floor(item.spend/item.currentPrice);
 			if(item["quantity"] > 0) {
-				checkAmount += item["spend"]
+				checkAmount += item.quantity * item.currentPrice; //keep track of spend
 			}
-		})
+		});
 		
 	}
-	console.log(checkAmount)
+
+	//finalize check amount number
+	checkAmount = checkAmount.toFixed(2);
 
 
 	//create purchase recommendation object
 	var purchase = positions.map(item => {
 		var remaining = Math.round(item.spend - item.quantity * item.currentPrice);
-		totalRemaining = amount - checkAmount;
+		totalRemaining = Math.round(amount - checkAmount);
 		var obj = {
 			symbol: item.symbol,
 			spend: item.spend,
@@ -95,7 +108,6 @@ function determinePurchase(amount, equity, positions) {
 		}
 		return obj;
 	});
-		console.log(purchase)
 
 	//attach everything to page
 	var resultTitle = $(`<h2>Your Results</h2>`);
