@@ -81,7 +81,7 @@ input[type=text] {
 }
 
 .single-select .selection label:hover {
-  background-color: #F99838;
+  background-color: #701543;
   transition: color 0.3s ease;
 }
 
@@ -93,6 +93,8 @@ input[type=text] {
   background-color: #F99838;
   color: white;
 }
+
+/*submit button*/
 
 #submit {
 	display: inline-block;

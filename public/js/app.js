@@ -1,5 +1,8 @@
+
+
 //display accounts on load
 getAccounts();
+
 
 //get accounts
 function getAccounts() {
@@ -14,10 +17,20 @@ function getAccounts() {
 			var selectionInput = $(`<input id=${accounts[key]} value=${accounts[key]} name='accounts' type='radio'>`);
 			var selectionLabel = $(`<label for=${accounts[key]}>${key}</label>`);
 			selectionDiv.append(selectionInput, selectionLabel);
-			$(".single-select").append(selectionDiv);	
+			$("#account-div").append(selectionDiv);	
 		}
 	});
 }
+
+function getPortfolio() {
+	$.ajax("/api/portfolio", {
+		type: "GET"
+	}).then(function(res) {
+		console.log(res);
+	});
+}
+
+
 
 //get account balance
 function getBalance(account) {
@@ -130,11 +143,13 @@ $("#submit").on("click", function(event) {
 	//empty fields
 	$("#amount-error").empty();
 	$("#account-error").empty();
+	$("#portfolio-error").empty();
 
 	//get user input
 	var equity =$("input[name='accounts']:checked").attr("data-equity"); //account equity
 	var amount = $("#enter-amount").val().trim(); //user's entered amount
 	var account = $("input[name='accounts']:checked").val(); //chosen account
+	var portfolio = $("input[name='portfolio']:checked").val();
 	var error = false; 
 
 	//check for errors
@@ -146,10 +161,22 @@ $("#submit").on("click", function(event) {
 		$("#account-error").append("! Please select an account");
 		error = true;
 	}
+	if (!portfolio) {
+		$("#portfolio-error").append("! Please select a portfolio");
+		error = true;
+	}
 
 	//execute call
 	if(!error) {
 		getPositions(account, equity, amount);
 	}
 	
+});
+
+//submit button functionality
+$("#evil").on("click", function(event) {
+	event.preventDefault();
+	console.log("hi");
+	getPortfolio();
+
 });

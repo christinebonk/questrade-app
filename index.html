@@ -26,9 +26,24 @@
 			<!--Accounts-->
 			<section id="accounts">
 				<h2>Select an Account</h2>
-				<div class="single-select">
+				<div class="single-select" id="account-div">
 				</div>
 				<p class="error-message" id="account-error"></p>
+			</section>
+			<!--Portfolio-->
+			<section id="portfolio">
+				<h2>Select a Portfolio</h2>
+				<div class="single-select">
+					<div class="selection">
+						<input value="0" name="portfolio" id="complex" type="radio">
+						<label for="complex">Complex</label>
+					</div>
+					<div class="selection">
+						<input value="1" name="portfolio" id="simple" type="radio">
+						<label for="simple">Simple</label>
+					</div>
+				</div>
+				<p class="error-message" id="portfolio-error"></p>
 			</section>
 			<!--Amount-->
 			<section id="amount">

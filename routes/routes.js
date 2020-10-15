@@ -48,6 +48,7 @@ function routes(app) {
 	app.get("/api/positions/:account", function(req,res) {
 		var account = req.params.account;
 		getPortfolio();
+		console.log(portfolio);
 		axios.get(`${server}v1/accounts/${account}/positions`, {
 			headers: {Authorization: "Bearer " + access}
 		}).then(function(results){
@@ -71,6 +72,13 @@ function routes(app) {
 			console.log(error);
 		}); 
 	});
+
+	app.get("/api/portfolio", function(req,res) {
+		getPortfolio();
+		console.log(portfolio);
+	});
+
+	
 }
 
 module.exports = routes;
@@ -83,5 +91,6 @@ function getPortfolio() {
 			return console.log(error);
 		};
 		portfolio = JSON.parse(data);	
+		return portfolio;
 	});
 }
