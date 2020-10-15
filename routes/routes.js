@@ -45,13 +45,21 @@ function routes(app) {
 		}); 
 	});
 
-	app.get("/api/positions/:account", function(req,res) {
+	app.get("/api/positions/:account/:portfolio", function(req,res) {
 		var account = req.params.account;
+		var portfolioType = req.params.portfolio;
 		getPortfolio();
-		console.log(portfolio);
 		axios.get(`${server}v1/accounts/${account}/positions`, {
 			headers: {Authorization: "Bearer " + access}
 		}).then(function(results){
+			//Detemine portfolio type
+			if (portfolioType === "complex") {
+				portfolio = portfolio[0];
+			} else if (portfolioType === "simple") {
+				portfolio = portfolio[1];
+			}
+
+			//Determine positions
 			positions = results.data.positions;
 			positions = positions.map(position => {
 				var currentAllocation = position.currentMarketValue/equity;

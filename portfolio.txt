@@ -1,4 +1,5 @@
 
+[
 [ 
 	{
 		"symbol": "ZSP.TO",
@@ -40,5 +41,17 @@
 		"symbol": "ZHY.TO",
 		"allocation": 0.05
 	}
+], [
+	{
+		"symbol": "XAC.TO",
+		"allocation": "0.8"
+	},
+
+	{
+		"symbol": "XIC.TO",
+		"allocation": "0.2"
+	}
+
+	]
 ]
 

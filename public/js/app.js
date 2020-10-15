@@ -22,15 +22,6 @@ function getAccounts() {
 	});
 }
 
-function getPortfolio() {
-	$.ajax("/api/portfolio", {
-		type: "GET"
-	}).then(function(res) {
-		console.log(res);
-	});
-}
-
-
 
 //get account balance
 function getBalance(account) {
@@ -42,8 +33,8 @@ function getBalance(account) {
 }
 
 //get account positions
-function getPositions(account, equity, amount) {
-	$.ajax(`/api/positions/${account}`, {
+function getPositions(account, equity, amount, portfolio) {
+	$.ajax(`/api/positions/${account}/${portfolio}`, {
 		type:"GET"
 	}).then(function(res) {
 		var positions = res;
@@ -166,17 +157,11 @@ $("#submit").on("click", function(event) {
 		error = true;
 	}
 
+
 	//execute call
 	if(!error) {
-		getPositions(account, equity, amount);
+		getPositions(account, equity, amount, portfolio);
 	}
 	
 });
 
-//submit button functionality
-$("#evil").on("click", function(event) {
-	event.preventDefault();
-	console.log("hi");
-	getPortfolio();
-
-});
