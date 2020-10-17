@@ -66,6 +66,9 @@ function routes(app) {
 				var allocation = portfolio.filter(obj => {
 					return obj.symbol === position.symbol
 				});
+				if (!allocation[0]) {
+					return res.status(404).json({ msg: 'Incorrect Portfolio selected' });
+				}
 				var obj = {
 					symbol: position.symbol,
 					currentMarketValue: position.currentMarketValue,
