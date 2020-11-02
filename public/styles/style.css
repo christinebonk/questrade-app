@@ -156,6 +156,48 @@ input[type=text] {
 	width: 100%;
 }
 
+/*token screen*/
+
+#token {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: #280739;
+	z-index: 10;
+}
+
+#token-question h2 {
+	color: white;
+	text-align: center;
+	margin-top: 10%;
+	font-size: 30px;
+}
+
+#submit-token {
+	display: inline-block;
+	width: 100px;
+	background-color: #EFB614;
+	border-radius: 6px;
+	padding: 15px;
+	cursor: pointer;
+	text-align: center;
+	color: white;
+}
+
+#submit-token:hover {
+	background-color: #F99838;
+	transition: color 0.3s ease;
+}
+
+#token-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
 
 /*media queries*/

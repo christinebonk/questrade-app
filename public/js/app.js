@@ -1,7 +1,8 @@
 
-
 //display accounts on load
 getAccounts();
+
+
 
 
 //get accounts
@@ -10,6 +11,7 @@ function getAccounts() {
 		type: "GET"
 	}).then(function(res) {
 		var accounts = res;
+		console.log(accounts);
 		for (var key in accounts) {
 			//todo: loading screen
 			getBalance(accounts[key]);
@@ -165,3 +167,27 @@ $("#submit").on("click", function(event) {
 	
 });
 
+//submit token 
+
+$("#submit-token").on("click", function(event) {
+	event.preventDefault();
+	//empty field
+	$("token-input").empty();
+
+	//get input 
+	var token = $("#token-input").val().trim();
+	var error = false; 
+	
+	//check for errors
+	if (!token) {
+		$("#token-error").append("! Please enter a token");
+		error = true;
+	} 
+
+	if(!error) {
+		console.log("hi")
+		document.getElementById("token").style.display = "none";
+	}
+
+
+});

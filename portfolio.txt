@@ -43,13 +43,23 @@
 	}
 ], [
 	{
-		"symbol": "XAC.TO",
-		"allocation": "0.8"
+		"symbol": "XEF.TO",
+		"allocation": "0.5"
 	},
 
 	{
 		"symbol": "XIC.TO",
 		"allocation": "0.2"
+	},
+
+	{
+		"symbol": "IVV.TO",
+		"allocation": "0.15"
+	},
+
+	{
+		"symbol": "IEMG.TO",
+		"allocation": "0.15"
 	}
 
 	]
