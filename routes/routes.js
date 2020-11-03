@@ -79,7 +79,6 @@ function routes(app) {
 					allocation: allocation[0].allocation,
 					currentPrice: position.currentPrice
 				}
-				console.log(obj);
 				return obj;
 			});
 			res.json(positions);

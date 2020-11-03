@@ -29,6 +29,7 @@ function checkToken() {
   }).then(function(results) {
     routes(app);
   }).catch(function(error) {
+    console.log(error);
     if (error.response.data.code == "1017") {
       refreshToken();
     } else {
@@ -48,7 +49,7 @@ function refreshToken() {
         return console.log(error);
       };
       access = res.access_token;
-      routes(app);
+      checkToken()
     });
   }).catch(function(error) {
     console.log(error);
