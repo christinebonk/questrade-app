@@ -10,7 +10,11 @@ function getAccounts() {
 	$.ajax("/api/accounts", {
 		type: "GET"
 	}).then(function(res) {
+		//don't display token screen if token is already valid
 		var accounts = res;
+		if (accounts) {
+			document.getElementById("token").style.display = "none";
+		}
 		console.log(accounts);
 		for (var key in accounts) {
 			//todo: loading screen

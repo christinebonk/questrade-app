@@ -25,11 +25,14 @@ function routes(app) {
 			accounts.forEach(function(item) {
 				var type = item.type;
 				var number = item.number;
+				if (accountObj[type]) {
+					type = type + " 2";
+				}
 				accountObj[type] = number;
 			})
 			res.json(accountObj);
 		}).catch(function(error) {
-			console.log(error);
+			console.log(error.config);
 		});
 	});
 
@@ -76,6 +79,7 @@ function routes(app) {
 					allocation: allocation[0].allocation,
 					currentPrice: position.currentPrice
 				}
+				console.log(obj);
 				return obj;
 			});
 			res.json(positions);
